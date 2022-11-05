@@ -41,7 +41,50 @@ public class Q2Checksum {
    * @param output The name of the output file
    * @param checksum if true, include checksums in the output file
    */
-  public static void checksum(String input, String output, boolean checksum) {
+    public static void checksum(String input, String output, boolean checksum) {
     // FIXME complete this method
+    try{
+      FileInputStream in = new FileInputStream(input);
+      FileOutputStream out = new FileOutputStream(output);
+
+      byte [] temp = new byte[10];
+      int byte_read;
+      int count = 0;
+      boolean indicator = false;
+      while((byte_read = in.read()) != -1){
+        if(byte_read != '\r'){
+          temp[count%10] = (byte)byte_read;
+          count++;
+          indicator = true;
+        }
+        if(count%10 == 0 && indicator){
+          if(checksum){
+            int sum = 0;
+            for(int i = 0; i < 10; i++){
+              sum += temp[i];
+            }
+            out.write((byte)(sum%26+97));
+          }
+          out.write(temp);
+          indicator = false;
+        }
+      }
+      if(checksum){
+        int sum = 0;
+        for(int i = 0; i < count%10; i++){
+          sum += temp[i];
+        }
+        out.write((byte)(sum%26+97));
+      }
+      out.write(temp,0,count%10);
+
+      in.close();
+      out.close();
+    }catch(FileNotFoundException e){
+      e.printStackTrace();
+    }catch(IOException e){
+      e.printStackTrace();
+    }
   }
+}
 }
