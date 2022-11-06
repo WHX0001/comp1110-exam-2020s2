@@ -1,5 +1,10 @@
 package comp1110.exam;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * COMP1110 Final Exam, Question 2
  *
@@ -87,4 +92,4 @@ public class Q2Checksum {
     }
   }
 }
-}
+
