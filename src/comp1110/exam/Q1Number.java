@@ -68,14 +68,20 @@ public class Q1Number {
   public static int find(int[] grid, int target) {
     // FIXME complete this method
     //initialization
+    System.out.println("-------------------start------------------------");
     int res = -1;
     int[] targets = interpretTarget(String.valueOf(target));
 
     for(int i = 0; i < grid.length; i++){
       if(targets[0] == grid[i]){
-
-        searchNeighbour(grid,String.valueOf(target).substring(1), i);
-        res = i;
+        if(String.valueOf(target).length()>1){ // multiple targets
+          if(searchNeighbour(grid,String.valueOf(target).substring(1), i)){//verify by its following targets
+            res = i;
+          }
+        }else{//only one target
+          System.out.println("mark");
+          res = i;
+        }
       }
     }
 
@@ -83,31 +89,60 @@ public class Q1Number {
   }
 
   public static boolean searchNeighbour(int[] grid, String targetString, int currentPosition){
-    grid[currentPosition] = -100;
+    System.out.println(targetString);
+    int[] temp = grid.clone();
+    temp[currentPosition] = -100;
     int targets[] = interpretTarget(targetString);
     int target = targets[0];
+    int[] searchPositions = findNeighbour(grid,targetString,currentPosition);
+    for(int i: searchPositions){
+      if(grid[i] == target){
+        if(targetString.length()>1){
+          temp[i] = -100;
+          if(searchNeighbour(temp, targetString.substring(1), i)){
+            return true;
+          }else{
+            return false;
+          }
+        }
+        return true;
+      }
+    }
+    return false;
   }
 
   public static int[] findNeighbour(int[] grid, String targetString, int currentPosition){
     int size = (int)Math.sqrt(grid.length);
+    int currentXPosition = currentPosition%size;
+    int currentYPosition = currentPosition/size;
+
     ArrayList<Integer> positions = new ArrayList<>();
-    int[] potentialPositions = new int[]{
-            currentPosition-size-1,
-            currentPosition-size,
-            currentPosition-size+1,
-            currentPosition-1,
-            currentPosition,
-            currentPosition+1,
-            currentPosition+size-1,
-            currentPosition+size,
-            currentPosition+size+1,
-    };
-    for(int potentialPosition: potentialPositions){
-      if(potentialPosition >= 0 && potentialPosition < grid.length && grid[potentialPosition] != -100){
-        positions.add(potentialPosition);
+    if(checkValidity(size, currentXPosition, currentYPosition-1)){
+      if(grid[currentYPosition*size+currentXPosition-size] != -100){
+        positions.add(currentYPosition*size+currentXPosition-size);
+      }
+    }
+    if(checkValidity(size, currentXPosition-1, currentYPosition)){
+      if(grid[currentYPosition*size+currentXPosition-1] != -100){
+        positions.add(currentYPosition*size+currentXPosition-1);
+      }
+    }
+    if(checkValidity(size, currentXPosition+1, currentYPosition)){
+      if(grid[currentYPosition*size+currentXPosition+1] != -100) {
+        positions.add(currentYPosition * size + currentXPosition + 1);
+      }
+    }
+    if(checkValidity(size, currentXPosition, currentYPosition+1)){
+      if(grid[currentYPosition*size+currentXPosition+size] != -100) {
+        positions.add(currentYPosition * size + currentXPosition + size);
       }
     }
     return positions.stream().mapToInt(Integer::intValue).toArray();
+  }
+  public static boolean checkValidity(int size, int x, int y){
+    boolean xValidity = (x >= 0) && (x <= size-1);
+    boolean yValidity = (y >= 0) && (y <= size-1);
+    return  xValidity && yValidity;
   }
   public static int[] interpretTarget(String target){
     int[] targets = new int[target.length()];
