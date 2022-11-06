@@ -1,5 +1,8 @@
 package comp1110.exam;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * COMP1110 Final Exam, Question 1.3 (harder)
  *
@@ -61,7 +64,56 @@ public class Q1Number {
    * (index) within the grid of the first digit of the target number, or -1
    * if it is not in the grid.
    */
+
   public static int find(int[] grid, int target) {
-    return -2;  // FIXME complete this method
+    // FIXME complete this method
+    //initialization
+    int res = -1;
+    int[] targets = interpretTarget(String.valueOf(target));
+
+    for(int i = 0; i < grid.length; i++){
+      if(targets[0] == grid[i]){
+
+        searchNeighbour(grid,String.valueOf(target).substring(1), i);
+        res = i;
+      }
+    }
+
+    return res;
+  }
+
+  public static boolean searchNeighbour(int[] grid, String targetString, int currentPosition){
+    grid[currentPosition] = -100;
+    int targets[] = interpretTarget(targetString);
+    int target = targets[0];
+  }
+
+  public static int[] findNeighbour(int[] grid, String targetString, int currentPosition){
+    int size = (int)Math.sqrt(grid.length);
+    ArrayList<Integer> positions = new ArrayList<>();
+    int[] potentialPositions = new int[]{
+            currentPosition-size-1,
+            currentPosition-size,
+            currentPosition-size+1,
+            currentPosition-1,
+            currentPosition,
+            currentPosition+1,
+            currentPosition+size-1,
+            currentPosition+size,
+            currentPosition+size+1,
+    };
+    for(int potentialPosition: potentialPositions){
+      if(potentialPosition >= 0 && potentialPosition < grid.length && grid[potentialPosition] != -100){
+        positions.add(potentialPosition);
+      }
+    }
+    return positions.stream().mapToInt(Integer::intValue).toArray();
+  }
+  public static int[] interpretTarget(String target){
+    int[] targets = new int[target.length()];
+    for(int i = 0; i < target.length(); i++){
+      targets[i] = Integer.parseInt(String.valueOf(target.charAt(i)));
+    }
+    return targets;
   }
 }

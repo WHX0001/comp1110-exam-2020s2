@@ -42,7 +42,12 @@ public class Q5Address {
     @Override
     public int hashCode() {
         // FIXME complete this method
-        return new Random().nextInt(2);
+        int res = 0;
+        for(int i = 0; i< this.streetName.length(); i++){
+            res += streetName.charAt(i);
+        }
+        res += (this.streetNumber+this.postCode);
+        return res;
     }
 
     /**
@@ -52,7 +57,18 @@ public class Q5Address {
     @Override
     public boolean equals(Object object) {
         // FIXME complete this method
-        return false;
+        if(object == this){
+            return true;
+        }
+        if(!(object instanceof Q5Address)){
+            return false;
+        }
+        Q5Address other = (Q5Address) object;
+        boolean streetNameEquals = (this.streetName == null && other.streetName == null)
+                || (this.streetName != null && this.streetName.equals(other.streetName));
+        boolean streetNumberEquals = (this.streetNumber == other.streetNumber);
+        boolean postCodeEquals = (this.postCode==other.postCode);
+        return streetNameEquals && streetNumberEquals &postCodeEquals;
     }
 
     @Override

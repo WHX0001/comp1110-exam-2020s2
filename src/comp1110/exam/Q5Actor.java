@@ -45,7 +45,17 @@ public class Q5Actor {
     @Override
     public int hashCode() {
         // FIXME complete this method
-        return new Random().nextInt(2);
+        long res = 0;
+        for(int i = 0; i < this.given.length(); i++){
+            res += this.given.charAt(i);
+        }
+        for(int i = 0; i < this.family.length(); i++){
+            res += this.family.charAt(i);
+        }
+        for(int i = 0; i < this.dob.length(); i++){
+            res += this.dob.charAt(i);
+        }
+        return (int)res%100;
     }
 
     /**
@@ -55,7 +65,22 @@ public class Q5Actor {
     @Override
     public boolean equals(Object object) {
         // FIXME complete this method
-        return false;
+        if(object == this){
+            return true;
+        }
+        if(!(object instanceof Q5Actor)){
+            return false;
+        }
+
+        Q5Actor q5Actor = (Q5Actor) object;
+
+        boolean givenEquals = (this.given == null && q5Actor.given == null)
+                || (this.given != null && this.given.equals(q5Actor.given));
+        boolean familyEquals = (this.family == null && q5Actor.family == null)
+                || (this.family != null && this.family.equals(q5Actor.family));
+        boolean dobEquals = (this.dob == null && q5Actor.dob == null)
+                || (this.dob != null && this.dob.equals(q5Actor.dob));
+        return givenEquals && familyEquals && dobEquals;
     }
 
     @Override
