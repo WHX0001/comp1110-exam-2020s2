@@ -14,6 +14,9 @@ package comp1110.exam;
  * The wheel can spin around to move a new car to the bottom.
  */
 public class Q4FerrisWheel<T> {
+    private T[] elements;
+    private int numberOfCars;
+    private int positionOfBottomCar;
     /**
      * Create a FerrisWheel with the given number of cars.
      *
@@ -21,6 +24,9 @@ public class Q4FerrisWheel<T> {
      */
     public Q4FerrisWheel(int numberOfCars) {
         // FIXME complete this constructor
+        this.numberOfCars = numberOfCars;
+        this.elements = (T[])new Object[numberOfCars];
+        this.positionOfBottomCar = 0;
     }
 
     /**
@@ -29,7 +35,12 @@ public class Q4FerrisWheel<T> {
      */
     public boolean isEmpty() {
         // FIXME complete this method
-        return false;
+        for(T element:elements){
+            if(element!=null){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -41,6 +52,10 @@ public class Q4FerrisWheel<T> {
      */
     public boolean load(T obj) {
         // FIXME complete this method
+        if(elements[positionOfBottomCar] == null){
+            elements[positionOfBottomCar] = obj;
+            return true;
+        }
         return false;
     }
 
@@ -53,6 +68,11 @@ public class Q4FerrisWheel<T> {
      */
     public T unload() {
         // FIXME complete this method
+        if(elements[positionOfBottomCar] != null){
+            T temp = elements[positionOfBottomCar];
+            elements[positionOfBottomCar] = null;
+            return temp;
+        }
         return null;
     }
 
@@ -64,6 +84,7 @@ public class Q4FerrisWheel<T> {
      */
     public void spin() {
         // FIXME complete this method
+        this.positionOfBottomCar = (positionOfBottomCar+1)%numberOfCars;
     }
 
     /**
@@ -76,6 +97,11 @@ public class Q4FerrisWheel<T> {
      */
     public boolean contains(T value) {
         // FIXME complete this method
+        for(T element:elements){
+            if(element != null && element.equals(value)){
+                return true;
+            }
+        }
         return false;
     }
 
@@ -104,7 +130,20 @@ public class Q4FerrisWheel<T> {
      */
     public String toString() {
         // FIXME complete this method
-        return null;
+        String res = "";
+        for(int i = 0; i < numberOfCars; i++){
+            if(this.elements[positionOfBottomCar] == null){
+                res += ",";
+            }else{
+                res += this.elements[positionOfBottomCar] + ",";
+            }
+            spin();
+        }
+        if(numberOfCars == 0){
+            return res;
+        }else {
+            return res.substring(0, res.length()-1);
+        }
     }
 }
 
