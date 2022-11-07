@@ -43,7 +43,12 @@ public class Q5Car {
     @Override
     public int hashCode() {
         // FIXME complete this method
-        return new Random().nextInt(2);
+        int h = 0;
+        String str = this.make+this.model+this.year;
+        for(int i = 0; i<str.length(); i++){
+            h = 11*h + str.charAt(i);
+        }
+        return h;
     }
 
     /**
@@ -53,7 +58,21 @@ public class Q5Car {
     @Override
     public boolean equals(Object object) {
         // FIXME complete this method
-        return false;
+        if(object == this){
+            return true;
+        }
+        if(!(object instanceof Q5Car)){
+            return false;
+        }
+        Q5Car q5Car = (Q5Car) object;
+
+        boolean makeEquals = (this.make == null && q5Car.make == null)
+                || (this.make != null && this.make.equals(q5Car.make));
+        boolean modelEquals = (this.model == null && q5Car.model == null)
+                || (this.model != null && this.model.equals(q5Car.model));
+        boolean yearEquals = (this.year == q5Car.year);
+
+        return makeEquals && modelEquals && yearEquals;
     }
 
     @Override

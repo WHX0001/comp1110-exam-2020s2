@@ -42,12 +42,18 @@ public class Q5Address {
     @Override
     public int hashCode() {
         // FIXME complete this method
-        int res = 0;
-        for(int i = 0; i< this.streetName.length(); i++){
-            res += streetName.charAt(i);
+//        int res = 0;
+//        for(int i = 0; i< this.streetName.length(); i++){
+//            res += streetName.charAt(i);
+//        }
+//        res += (this.streetNumber+this.postCode);
+//        return res;
+        int h = 0;
+        String str = this.streetNumber+this.streetName+this.postCode;
+        for(int i = 0; i<str.length(); i++){
+            h = 11*h + str.charAt(i);
         }
-        res += (this.streetNumber+this.postCode);
-        return res;
+        return h;
     }
 
     /**

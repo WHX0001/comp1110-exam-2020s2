@@ -45,17 +45,23 @@ public class Q5Actor {
     @Override
     public int hashCode() {
         // FIXME complete this method
-        long res = 0;
-        for(int i = 0; i < this.given.length(); i++){
-            res += this.given.charAt(i);
+        int h = 0;
+        String str = this.given+this.family+this.dob;
+        for(int i = 0; i<str.length(); i++){
+            h = 11*h + str.charAt(i);
         }
-        for(int i = 0; i < this.family.length(); i++){
-            res += this.family.charAt(i);
-        }
-        for(int i = 0; i < this.dob.length(); i++){
-            res += this.dob.charAt(i);
-        }
-        return (int)res%100;
+        return h;
+//        long res = 0;
+//        for(int i = 0; i < this.given.length(); i++){
+//            res += this.given.charAt(i);
+//        }
+//        for(int i = 0; i < this.family.length(); i++){
+//            res += this.family.charAt(i);
+//        }
+//        for(int i = 0; i < this.dob.length(); i++){
+//            res += this.dob.charAt(i);
+//        }
+//        return (int)res%100;
     }
 
     /**
