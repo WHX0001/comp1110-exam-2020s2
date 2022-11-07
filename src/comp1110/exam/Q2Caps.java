@@ -1,5 +1,9 @@
 package comp1110.exam;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * COMP1110 Final Exam, Question 2
  *
@@ -45,5 +49,52 @@ public class Q2Caps {
    */
   public static void capitalize(String input, String output, boolean caps) {
     // FIXME complete this method
+    try{
+      InputStream in = new FileInputStream(input);
+      OutputStream out = new FileOutputStream(output);
+      byte[] contentByByte = new byte[(int) new File(input).length()];
+      in.read(contentByByte);
+
+      String contentByString = "";
+      for(byte c: contentByByte){
+        contentByString += (char)c;
+      }
+
+      if(caps){
+        String[] contentByArray = contentByString.split(" ");
+        System.out.println(Arrays.toString(contentByArray));
+        String res ="";
+        for(String element: contentByArray){
+          String elementRes = element;
+          if(element.length() != 0 && element.length()<=21 && element.charAt(element.length()-1) == '!'){
+            elementRes = convertToCaps(element);
+          }
+          res += elementRes;
+        }
+        int positionOfRes = 0;
+        for(int i = 0; i < contentByByte.length; i++){
+          if(contentByByte[i]!= ' '){
+            contentByByte[i] = (byte)res.charAt(positionOfRes);
+            positionOfRes++;
+          }
+        }
+      }
+
+      out.write(contentByByte);
+    }catch(IOException e){
+      e.printStackTrace();
+    }
+
+  }
+  public static String convertToCaps(String input) {
+    String res = "";
+    for (int i = 0; i < input.length(); i++) {
+      char cap = input.charAt(i);
+      if(cap >= 97 && input.charAt(i) <= 122){
+        cap = (char)(input.charAt(i) - 32);
+      }
+      res += cap;
+    }
+    return res;
   }
 }
